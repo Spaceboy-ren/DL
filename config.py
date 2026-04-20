@@ -22,8 +22,8 @@ class Config:
     train_annotation: str = "ttm_train_clean.json"
     val_annotation: str = "ttm_val_clean.json"
 
-    # Where preprocessed features get saved (inside riceu working dir)
-    feature_dir: str = "/DATA/DL_21/riceu/preprocessed_features"
+    # Where preprocessed features get saved
+    feature_dir: str = "preprocessed_features"
 
     # ──────────────────────────────────────────────────────────────
     # Preprocessing
