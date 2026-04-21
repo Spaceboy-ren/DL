@@ -1,0 +1,14 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# ML Outputs
+checkpoints/
+logs/
+plots/
+remote_plots/
+
+# IDEs and OS
+.DS_Store
+.vscode/
+.idea/

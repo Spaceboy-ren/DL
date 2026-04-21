@@ -1,28 +1,23 @@
 # Core
 torch>=2.0.0
 torchvision>=0.15.0
-torchaudio>=2.0.0
 
 # PyTorch Geometric
 torch-geometric>=2.4.0
 torch-scatter
 torch-sparse
 
-# Vision & Audio
+# Vision & Audio (and Gaze)
 opencv-python>=4.7.0
 librosa>=0.10.0
-soundfile>=0.12.0
+l2cs
 
 # ML utilities
 scikit-learn>=1.2.0
 numpy>=1.24.0
-pandas>=2.0.0
 
 # Visualization & Logging
 matplotlib>=3.7.0
 seaborn>=0.12.0
 tqdm>=4.65.0
 tensorboard>=2.13.0
-
-# Face detection (optional, for enhanced face crops)
-facenet-pytorch>=2.5.3
