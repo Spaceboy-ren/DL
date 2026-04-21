@@ -219,12 +219,12 @@ def validate_epoch(model, loader, criterion, cfg, epoch):
 # Metrics
 # ─────────────────────────────────────────────────────────────────
 
-def compute_metrics(probs: np.ndarray, labels: np.ndarray) -> dict:
+def compute_metrics(probs: np.ndarray, labels: np.ndarray, threshold: float = 0.5) -> dict:
     """Compute classification metrics."""
     metrics = {}
 
-    # Binary predictions at threshold 0.5
-    preds = (probs >= 0.5).astype(int)
+    # Binary predictions at threshold
+    preds = (probs >= threshold).astype(int)
 
     try:
         metrics["auc_roc"] = roc_auc_score(labels, probs)
@@ -257,7 +257,7 @@ def compute_metrics(probs: np.ndarray, labels: np.ndarray) -> dict:
 
 
 def compute_person_metrics(probs: np.ndarray, labels: np.ndarray,
-                           person_ids: np.ndarray, clip_uids: list, aggregate: str = "mean") -> dict:
+                           person_ids: np.ndarray, clip_uids: list, aggregate: str = "mean", threshold: float = 0.5) -> dict:
     """
     Compute per-person aggregated metrics.
     Groups nodes by (clip_uid, person_id) and aggregates predictions.
@@ -284,7 +284,7 @@ def compute_person_metrics(probs: np.ndarray, labels: np.ndarray,
     agg_probs = np.array(agg_probs)
     agg_labels = np.array(agg_labels)
 
-    return compute_metrics(agg_probs, agg_labels)
+    return compute_metrics(agg_probs, agg_labels, threshold=threshold)
 
 
 # ─────────────────────────────────────────────────────────────────
@@ -629,7 +629,7 @@ def evaluate(cfg: Config, checkpoint_path: str = None,
     print("\n" + "=" * 60)
     print("Node-Level Metrics")
     print("=" * 60)
-    node_metrics = compute_metrics(all_probs, all_labels)
+    node_metrics = compute_metrics(all_probs, all_labels, threshold=0.40)
     for k, v in node_metrics.items():
         print(f"  {k:20s}: {v:.4f}")
 
@@ -637,7 +637,7 @@ def evaluate(cfg: Config, checkpoint_path: str = None,
     print("\n" + "=" * 60)
     print("Person-Level Metrics (aggregated)")
     print("=" * 60)
-    person_metrics = compute_person_metrics(all_probs, all_labels, all_person_ids, all_clip_uids)
+    person_metrics = compute_person_metrics(all_probs, all_labels, all_person_ids, all_clip_uids, threshold=0.20)
     for k, v in person_metrics.items():
         print(f"  {k:20s}: {v:.4f}")
 
